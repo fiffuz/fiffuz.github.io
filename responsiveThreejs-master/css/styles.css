@@ -1,0 +1,207 @@
+	body { 
+		margin: 0px;
+		background-color: #fafafa; 
+	} 
+	h3{
+		color: gray;
+		font-family: "Lato", "Gills Sans", Helvetica, Arial, Sans-serif;
+	}
+	footer{
+		color: #696969;
+		font-family: "Lato";
+		margin-bottom: 20px;
+	}
+	.row{
+		margin-top: 100px;
+	}
+	.thumbnail {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, .5);
+	}
+	.embed-responsive {
+  		position: relative;
+ 		display: block;
+  		height: 0;
+  		padding: 0;
+  		overflow: hidden;
+  		width: 100%;
+	}
+	.embed-responsive .embed-responsive-item,
+	.embed-responsive iframe,
+	.embed-responsive embed,
+	.embed-responsive object,
+	.embed-responsive video {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+	.embed-responsive-16by9 {
+	  	padding-bottom: 40%;
+	}
+.navbar.center .navbar-inner {
+    text-align: center;
+}
+.navbar.center .navbar-inner .nav {
+    float: none;
+    display:inline-block;
+    font-size: 18px;
+    font-family: "Lato";
+    margin-top:50px;
+}
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: auto;
+    font-size:28px;
+    font-family: "Lato";
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #cccccc;
+  background-color: transparent;
+}
+.navbar-default .navbar-brand {
+  color: #4c4c4c;
+}
+hr {
+	margin-top: 90px;
+  height: 0;
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+h3 {
+  font-family: "Lato";
+  font-weight: normal;
+  line-height: 1.1;
+  color: rgb(255,185,0);
+}
+p{
+	color: #9f9f9f;
+	font-family: "Helvetica Neue";
+	font-size: 16px;
+	padding-top: 20px;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #cccccc;
+  background-color: transparent;
+}
+.img-responsive{
+	display: block;
+	max-width: 25%;
+	height: auto;
+}
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+  margin-top: 45px;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #cccccc;
+  background-color: transparent;
+}
+/*New*/
+.mynavbar {
+	text-align:center;
+}
+.mynavbar .nav {
+	float:none;
+}
+.mynavbar .nav li {
+	display:inline-block;
+	float:none;
+	margin:0 0px;
+	vertical-align:middle;
+
+}
+.mynavbar .nav li.mylogo a, .mynavbar .nav li.mylogo a:hover {
+	background:transparent;
+	max-width:125px;
+
+}
+.mynavbar .nav li.mylogo a img {
+	width:80%;
+	height:auto;
+	vertical-align:middle;
+	display:inline-block;
+}
+.myBrand{
+	font-family: "Lato";
+  	font-weight: normal;
+  	line-height: 1.1;
+  	color: rgb(255,185,0);
+  	font-size: 28px;
+  	padding-top: 3px;
+
+}
+.stuff{
+	font-family: "Lato";
+  	font-weight: normal;
+  	line-height: 1.1;
+  	color: #696969;
+  	font-size: 18px;
+  }
+.navbar {
+  position: relative;
+  min-height: 50px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  background-color: transparent;
+}
+.navbar-nav {
+  margin: 7.5px -15px;
+}
+.navbar-nav > li > a {
+  padding-top: 3px;
+  padding-bottom: 10px;
+  line-height: 20px;
+}
+.navbar-nav > li > a img{
+  padding-top: 40px;
+  padding-bottom: 0px;
+  line-height: 20px;
+}
+h1{
+	color: gray;
+	font-family: "Lato";
+	font-weight: bold;
+	text-align: center;
+}
+/*new*/
+
+.navbar-header{
+	text-align: center;
+}
+
+/* General NEWNEWNEWNEW */
+
+body, html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+.block {
+    height: 80%;
+    box-sizing: border-box; /* One of my CSS3-favourites */
+}
+
+/* Specifics */
+    #block3 div {
+float: right;
+height: 100%;
+}
+    #block3 div:nth-child(1) {
+width: 100%;
+margin-right:-400px;
+background-color: gray;
+}
+

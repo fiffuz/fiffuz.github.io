@@ -1,0 +1,461 @@
+
+<html>
+
+    <body>
+
+        <script src="js/libs/three.min.js"></script>
+        <script src="js/controls/TrackballControls.js"></script>
+        <script type="text/javascript" src="js/libs/dat.gui.js"></script>
+        <script src="js/libs/stats.min.js"></script>
+        <script src="js/three.js"></script>
+        <script type="text/javascript" src="js/libs/stats.js"></script>
+        <script src="js/renderers/Projector.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.0.52/wavesurfer.min.js"></script>
+
+
+
+        <style>
+            body {
+              font-family: Futura;
+              background-color: #f0f0f0;
+              margin: 0px;
+              overflow: hidden;
+            }
+            .info {
+              position: absolute;
+              background-color: gray;
+              opacity: 0.6;
+              color: white;
+              text-align: center;
+              font-size: auto;
+              top: 0px;
+              width: 21%;
+              height: 100%;
+            }
+            .info a {
+              color: #00ffff;
+
+            }
+
+
+        </style>
+
+
+        <div class="info">
+
+          <H1>FILIPHOLIO</h1>
+
+            <div id="waveform"></div>
+
+        </div>
+
+        <div>
+        </div>
+
+
+        <script>
+            var projector
+            var objects = []
+            var camera, controls, scene, renderer;
+            var raycaster
+            var mouse = new THREE.Vector2(), INTERSECTED;
+
+
+            var wavesurfer = WaveSurfer.create({
+                container: '#waveform',
+                waveColor: '#7AC2BB',
+                progressColor: '#purple',
+                cursorColor: 'transparent',
+            });
+
+            wavesurfer.load('rhodes.mp3');
+
+            wavesurfer.on('ready', function () {
+                wavesurfer.play();
+
+
+            addRegion({
+                loop: true,
+                start: 1, // time in seconds
+                end: 9.179, // time in seconds
+                color: "rgba(0, 0, 50%, 0.1)",
+
+
+          });
+
+        });
+
+
+            init();
+            animate();
+
+            function init(){
+
+
+
+                camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+                camera.position.x = -12;
+                camera.position.y = 9;
+                camera.position.z = 48;
+
+
+                camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+                controls = new THREE.TrackballControls( camera );
+                controls.addEventListener('change', render);
+
+
+                controls.rotateSpeed = 1.0;
+                controls.zoomSpeed = 1.0;
+                controls.panSpeed = 1.0;
+                        //trackballControls.noZoom=false;
+                        //trackballControls.noPan=false;
+                controls.staticMoving = false;
+                controls.dynamicDampingFactor = 0.3;
+
+                raycaster = new THREE.Raycaster();
+
+                renderer = new THREE.WebGLRenderer();
+                projector = new THREE.Projector();
+
+                renderer.setClearColor(new THREE.Color(0xB1D5CE));
+                renderer.sortObjects = false;
+
+                renderer.setSize(window.innerWidth, window.innerHeight)
+                renderer.shadowMapEnabled = true;
+
+
+                document.addEventListener('mousedown', onDocumentMouseDown, false);
+                document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+
+
+
+                document.body.appendChild(renderer.domElement);
+
+
+                scene = new THREE.Scene();
+                scene.fog = new THREE.Fog(0xB1D5CE, 0.015, 140);
+
+                /////////////////////////////////////////////////
+
+                var geometry = new THREE.BoxBufferGeometry( 15, 6, 2 );
+                var texture = THREE.ImageUtils.loadTexture('tex/HP.png');
+                var material = new THREE.MeshBasicMaterial( { map: texture } );
+                var object = new THREE.Mesh( geometry, material );
+
+
+                object.position.z = 5;
+
+                object.position.x = 15;
+                object.position.y = 14;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/179214075"
+                };
+
+                scene.add( object );
+
+                var geometry = new THREE.BoxBufferGeometry( 15.01, 6.01, 2.01 );
+                var material = new THREE.MeshLambertMaterial( { transparent: true, opacity: .2, color: 0x7AC2BB } );
+                var object = new THREE.Mesh( geometry, material );
+
+
+                object.position.z = 5;
+
+                object.position.x = 15;
+                object.position.y = 14;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/179214075"
+                };
+
+                scene.add( object );
+
+                /////////////////////////////////////////////////
+
+                                var geometry = new THREE.BoxBufferGeometry( 11, 5, 1 );
+                                var texture = THREE.ImageUtils.loadTexture('tex/fmlogo.jpg');
+                                var material = new THREE.MeshBasicMaterial( { map: texture } );
+                                var object = new THREE.Mesh( geometry, material );
+
+
+
+                                object.position.x = -24;
+                                object.position.z = 10;
+                                object.position.y = 11;
+                                object.castShadow = true;
+                                object.userData = {
+                                    URL: "https://player.vimeo.com/video/126508522"
+                                };
+
+                                scene.add( object );
+
+                                var geometry = new THREE.BoxBufferGeometry( 11.01, 5.01, 1.01 );
+                                var material = new THREE.MeshLambertMaterial( { transparent: true, opacity: .2, color: 0x7AC2BB } );
+                                var object = new THREE.Mesh( geometry, material );
+
+
+
+                                object.position.x = -24;
+                                object.position.z = 10;
+                                object.position.y = 11;
+                                object.castShadow = true;
+                                object.userData = {
+                                    URL: "https://player.vimeo.com/video/126508522"
+                                };
+
+                                scene.add( object );
+
+                //
+
+                var geometry = new THREE.BoxBufferGeometry( 15, 10, 3 );
+                var texture = THREE.ImageUtils.loadTexture('tex/work2.jpg');
+
+                var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = 1;
+                object.position.y = 4;
+                object.position.z = 18;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/138253390"
+                };
+                scene.add( object );
+
+
+
+                var geometry = new THREE.BoxBufferGeometry( 15.01, 10.01, 3.01 );
+                var material = new THREE.MeshLambertMaterial( { transparent: true, opacity: .2, color: 0x7AC2BB } );
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = 1;
+                object.position.y = 4;
+                object.position.z = 18;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/138253390"
+                };
+                scene.add( object );
+
+                //
+
+                var geometry = new THREE.BoxBufferGeometry( 12, 6, 1 );
+                var texture = THREE.ImageUtils.loadTexture('tex/reverse.png');
+                var material = new THREE.MeshBasicMaterial( { map: texture } );
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = -12;
+                object.position.y = -1;
+                object.position.z = 25;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/151453010"
+                };
+                scene.add( object );
+
+                var geometry = new THREE.BoxBufferGeometry( 12.01, 6.01, 1.01 );
+                var material = new THREE.MeshLambertMaterial( { transparent: true, opacity: .2, color: 0x7AC2BB } );
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = -12;
+                object.position.y = -1;
+                object.position.z = 25;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/151453010"
+                };
+                scene.add( object );
+
+
+                //
+
+                var geometry = new THREE.BoxBufferGeometry( 15, 10, 2 );
+                var texture = THREE.ImageUtils.loadTexture('tex/chairs.jpg');
+                var material = new THREE.MeshBasicMaterial( { map: texture } );
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = -23;
+                object.position.y = 2;
+                object.position.z = 8;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/162370567"
+                };
+
+
+                scene.add( object );
+
+                //
+
+                var geometry = new THREE.BoxBufferGeometry( 20, 10, 1 );
+                var texture = THREE.ImageUtils.loadTexture('tex/justdoit.png');
+                var material = new THREE.MeshBasicMaterial( { map: texture } );
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = -8;
+                object.position.y = 13;
+                object.position.z = 0;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/190179244"
+                  };
+                  scene.add( object );
+
+
+                  var geometry = new THREE.BoxBufferGeometry( 20.01, 10.01, 1.01 );
+                  var material = new THREE.MeshLambertMaterial( { transparent: true, opacity: .2, color: 0x7AC2BB } );
+                  var object = new THREE.Mesh( geometry, material );
+
+                  object.position.x = -8;
+                  object.position.y = 13;
+                  object.position.z = 0;
+                  object.castShadow = true;
+                  object.userData = {
+                      URL: "https://player.vimeo.com/video/190179244"
+                    };
+
+                scene.add( object );
+
+                //primitives project trapper keeper
+
+
+                var geometry = new THREE.BoxBufferGeometry( 15, 10, 2 );
+                var texture = THREE.ImageUtils.loadTexture('tex/primitives.png');
+                var material = new THREE.MeshBasicMaterial( { map: texture } );
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = 20;
+                object.position.y = 4.5;
+                object.position.z = 13;
+                object.castShadow = true;
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/162370567"
+                  };
+                scene.add( object );
+
+
+                var geometry = new THREE.BoxBufferGeometry( 15.01, 10.01, 2.01);
+                var material = new THREE.MeshLambertMaterial( { transparent: true, opacity: .2, color: 0x7AC2BB } );
+                var object = new THREE.Mesh( geometry, material );
+
+                object.position.x = 20;
+                object.position.y = 4.5;
+                object.position.z = 13;
+                object.castShadow = true;
+                object.transparent = true;
+
+
+                object.userData = {
+                    URL: "https://player.vimeo.com/video/162370567"
+                  };
+                scene.add( object );
+
+                //
+
+                // create the ground plane
+                var planeGeometry = new THREE.PlaneGeometry(1000, 800, 100, 3);
+                var planeMaterial = new THREE.MeshLambertMaterial({color: 0x9AC2BB});
+                var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+                plane.receiveShadow = true;
+
+
+
+                // rotate and position the plane
+                plane.rotation.x = -0.5 * Math.PI;
+                plane.position.x = 0;
+                plane.position.y = -3;
+                plane.position.z = 0;
+                plane.userData = false;
+                plane.userData = null;
+                // add the plane to the scene
+                scene.add(plane);
+
+
+            }
+
+            var ambientLight = new THREE.AmbientLight(0xEfEEfE, 0.1);
+
+            scene.add(ambientLight);
+
+            var spotLight = new THREE.SpotLight(0xffffff, 0.6);
+            spotLight.position.set(-40, 60, -20);
+            spotLight.castShadow = true;
+            scene.add(spotLight);
+
+            // add the output of the renderer to the html element
+
+            // call the render function
+            var step = 0;
+
+            function onDocumentMouseDown() {
+                event.preventDefault();
+                var vector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 -
+                    1, -(event.clientY / window.innerHeight) * 2 + 1);
+
+                    projector.unprojectVector(vector, camera);
+                    var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position)
+                        .normalize());
+
+                    var intersects = raycaster.intersectObjects(scene.children);
+
+                    if (intersects.length > 0) {
+                        window.open(intersects[0].object.userData.URL);
+            }
+
+}
+
+var mouse = new THREE.Vector2(), INTERSECTED;
+
+
+
+function onDocumentMouseMove(event) {
+				event.preventDefault();
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+        raycaster.setFromCamera( mouse, camera );
+          var intersects = raycaster.intersectObjects( scene.children );
+          if ( intersects.length > 0 ) {
+            if ( INTERSECTED != intersects[ 0 ].object ) {
+              if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+              INTERSECTED = intersects[ 0 ].object;
+              INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+              INTERSECTED.material.emissive.setHex( 0x01AD54 );
+            }
+          } else {
+            if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+            INTERSECTED = null;
+          }
+
+
+
+}
+
+
+
+            function animate(){
+                requestAnimationFrame( animate );
+                render();
+                renderer.render( scene, camera );
+                controls.update();
+            }
+
+
+
+            function render() {
+
+				// find intersections
+
+				renderer.render( scene, camera );
+            }
+
+
+
+        </script>
+
+    </body>
+
+</html>

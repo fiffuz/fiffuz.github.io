@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Example 06.06 - Parametric geometries</title>
+    <script src="libs/three.js"></script>
+
+    <script src="js/libs/stats.js"></script>
+    <script src="js/libs/three.min.js"></script>
+    <script src="js/libs/stats.min.js"></script>
+
+    <script  src="js/controls/TrackballControls.js"></script>
+
+
+
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div id="Stats-output">
+</div>
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+
+<!-- Javascript code that runs our Three.js examples -->
+<script>
+
+    // once everything is loaded, we run our Three.js stuff.
+
+    function init() {
+
+        var stats = initStats();
+
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // create a render and set the size
+        var webGLRenderer = new THREE.WebGLRenderer();
+        webGLRenderer.setClearColor(new THREE.Color(0xEfEEfE));
+        webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+        webGLRenderer.shadowMapEnabled = true;
+
+        // position and point the camera to the center of the scene
+        camera.position.z = 100;
+        camera.position.x = 100;
+        camera.position.y = 100;
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        var trackballControls = new THREE.TrackballControls(camera);
+
+        trackballControls.rotateSpeed = 1.0;
+         trackballControls.zoomSpeed = 1.0;
+         trackballControls.panSpeed = 1.0;
+ //        trackballControls.noZoom=false;
+ //        trackballControls.noPan=false;
+         trackballControls.staticMoving = true;
+ //        trackballControls.dynamicDampingFactor=0.3;
+
+
+        var spotLight = new THREE.DirectionalLight();
+        spotLight.position = new THREE.Vector3(-20, 250, -50);
+        spotLight.target.position.x = 30;
+        spotLight.target.position.y = -40;
+        spotLight.target.position.z = -20;
+        spotLight.intensity = 0.3;
+
+        scene.add(spotLight);
+
+        // add the output of the renderer to the html element
+        document.getElementById("WebGL-output").appendChild(webGLRenderer.domElement);
+
+        // call the render function
+        var step = 0;
+
+
+
+        radialWave = function (u, v) {
+            var r = 50;
+
+            var x = Math.sin(u) * r;
+            var z = Math.sin(v / 2) * 2.5 * r;
+            var y = (Math.sin(u * 4 * Math.PI) + Math.cos(v * 2 * Math.PI)) * 2.8;
+
+            return new THREE.Vector3(x, y, z);
+        };
+
+        var mesh = createMesh(new THREE.ParametricGeometry(radialWave, 1, 100, 2000));
+        scene.add(mesh);
+
+        render();
+
+
+        function createMesh(geom) {
+            geom.applyMatrix(new THREE.Matrix4().makeTranslation(-25, 0, -25));
+            // assign two materials
+//            var meshMaterial = new THREE.MeshLambertMaterial({color: 0xff5555});
+            //var meshMaterial = new THREE.MeshNormalMaterial();
+            var meshMaterial = new THREE.MeshPhongMaterial({
+                specular: 0xaaaafff,
+                color: 0x3399ff,
+                shininess: 40,
+                metal: true
+            });
+            meshMaterial.side = THREE.DoubleSide;
+            // create a multimaterial
+            var plane = THREE.SceneUtils.createMultiMaterialObject(geom, [meshMaterial]);
+
+            return plane;
+        }
+
+
+        function render() {
+            stats.update();
+
+
+
+
+
+            mesh.rotation.y = 100
+            mesh.rotation.x = 50
+            mesh.rotation.z = 100
+
+
+            //webGLRenderer.clear();
+            // render using requestAnimationFrame
+            requestAnimationFrame(render);
+            webGLRenderer.render(scene, camera);
+        }
+
+
+
+        function initStats() {
+
+            var stats = new Stats();
+            stats.setMode(0); // 0: fps, 1: ms
+
+
+
+
+            // Align top-left
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+
+            document.getElementById("Stats-output").appendChild(stats.domElement);
+
+            return stats;
+        }
+    }
+    window.onload = init;
+</script>
+
+</body>
+</html>
